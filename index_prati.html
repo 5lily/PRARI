@@ -1,0 +1,1906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRATI - Public Relations and Advertising Type Indicator</title>
+    <!-- Tailwind CSS v3 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <!-- 统一的 Tailwind 配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1a56db', // Professional blue
+                        secondary: '#f97316', // Creative orange
+                        neutral: {
+                            dark: '#374151', // Dark gray
+                            light: '#f3f4f6', // Light gray
+                        },
+                        success: '#10b981', // Success green
+                        warning: '#fbbf24', // Warning yellow
+                        // Personality type colors
+                        guard: '#3b82f6', // Guardian - Blue
+                        pilot: '#10b981', // Pilot - Green
+                        build: '#6366f1', // Builder - Indigo
+                        bridge: '#ec4899', // Bridge - Pink
+                        create: '#f97316', // Creator - Orange
+                        story: '#8b5cf6', // Storyteller - Purple
+                        blaze: '#ef4444', // Blazer - Red
+                        map: '#84cc16', // Mapper - Lime
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-in': 'slideIn 0.5s ease-in-out',
+                        'float': 'float 3s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideIn: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                    },
+                    clipPath: {
+                        'hexagon': 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
+                        'diamond': 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)',
+                        'triangle': 'polygon(50% 0%, 0% 100%, 100% 100%)',
+                        'pentagon': 'polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            }
+            .transition-all-300 {
+                transition: all 0.3s ease;
+            }
+            .bg-gradient-primary {
+                background: linear-gradient(135deg, #1a56db 0%, #3182ce 100%);
+            }
+            .bg-gradient-secondary {
+                background: linear-gradient(135deg, #f97316 0%, #ed8936 100%);
+            }
+            .card-hover {
+                @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+            }
+            .shape-hover {
+                @apply transition-all duration-300 hover:scale-110 hover:shadow-xl cursor-pointer;
+            }
+            .text-gradient {
+                @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-md fixed w-full z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white font-bold text-xl">PRATI</div>
+                <span class="text-xl font-bold text-gray-800 hidden md:inline">PRATI Test</span>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#home" class="text-gray-700 hover:text-primary transition-all-300">Home</a>
+                <a href="#about" class="text-gray-700 hover:text-primary transition-all-300">About PRATI</a>
+                <a href="#test" class="text-gray-700 hover:text-primary transition-all-300">Take the Test</a>
+                <a href="#types" class="text-gray-700 hover:text-primary transition-all-300">Personality Types</a>
+                <a href="#research" class="text-gray-700 hover:text-primary transition-all-300">Research</a>
+            </div>
+            <div class="md:hidden">
+                <button id="mobile-menu-button" class="text-gray-700 focus:outline-none">
+                    <i class="fa fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="md:hidden hidden bg-white shadow-lg absolute w-full">
+            <div class="container mx-auto px-4 py-3 flex flex-col space-y-3">
+                <a href="#home" class="text-gray-700 hover:text-primary transition-all-300 py-2">Home</a>
+                <a href="#about" class="text-gray-700 hover:text-primary transition-all-300 py-2">About PRATI</a>
+                <a href="#test" class="text-gray-700 hover:text-primary transition-all-300 py-2">Take the Test</a>
+                <a href="#types" class="text-gray-700 hover:text-primary transition-all-300 py-2">Personality Types</a>
+                <a href="#research" class="text-gray-700 hover:text-primary transition-all-300 py-2">Research</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="pt-24 pb-16 md:pt-32 md:pb-24 bg-gradient-to-br from-primary/5 to-secondary/5">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-8 md:mb-0 animate-fade-in">
+                    <h1 class="text-4xl md:text-6xl font-bold text-gray-800 mb-4">Discover Your <span class="text-gradient">PR/AD Personality Type</span></h1>
+                    <p class="text-xl text-gray-600 mb-8">A scientifically-backed assessment to help HKBU PRA students find their perfect career fit in Public Relations or Advertising.</p>
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                        <a href="#test" class="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white font-medium py-3 px-8 rounded-lg shadow-md transition-all-300 text-center">
+                            Take the PRATI Test
+                        </a>
+                        <a href="#types" class="bg-white hover:bg-gray-100 text-primary border border-primary font-medium py-3 px-8 rounded-lg shadow-sm transition-all-300 text-center">
+                            Explore Personality Types
+                        </a>
+                    </div>
+                    <div class="mt-6 flex items-center space-x-2 text-sm text-gray-500">
+                        <i class="fa fa-clock-o"></i>
+                        <span>Only 15 questions • Takes 5 minutes</span>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center animate-slide-in">
+                    <div class="relative">
+                        <!-- Personality Type Shapes -->
+                        <div class="absolute top-0 left-0 w-24 h-24 bg-guard rounded-lg rotate-12 animate-float opacity-80"></div>
+                        <div class="absolute top-20 right-20 w-32 h-32 bg-create rounded-full animate-float opacity-70" style="animation-delay: 0.5s"></div>
+                        <div class="absolute bottom-10 left-10 w-28 h-28 bg-pilot rounded-lg rotate-45 animate-float opacity-80" style="animation-delay: 1s"></div>
+                        <div class="absolute bottom-0 right-0 w-36 h-36 bg-story rounded-lg rotate-12 animate-float opacity-70" style="animation-delay: 1.5s"></div>
+                        
+                        <!-- Main Card -->
+                        <div class="bg-white rounded-xl shadow-xl p-6 relative z-10 border border-gray-100">
+                            <div class="flex items-center justify-between mb-6">
+                                <div class="w-1/2 h-2 bg-gradient-to-r from-primary to-primary/50 rounded-full"></div>
+                                <div class="w-1/2 h-2 bg-gradient-to-r from-secondary/50 to-secondary rounded-full"></div>
+                            </div>
+                            <div class="space-y-6">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-12 h-12 rounded-lg bg-guard/20 flex items-center justify-center text-guard">
+                                        <i class="fa fa-shield text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-medium">GUARD (Guardian)</h3>
+                                        <p class="text-sm text-gray-500">Relationship-focused PR professional</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-12 h-12 rounded-full bg-create/20 flex items-center justify-center text-create">
+                                        <i class="fa fa-paint-brush text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-medium">CREATE (Creator)</h3>
+                                        <p class="text-sm text-gray-500">Creative-driven advertising specialist</p>
+                                    </div>
+                                </div>
+                                <div class="pt-4">
+                                    <div class="flex justify-between text-sm text-gray-500 mb-1">
+                                        <span>Personality Match</span>
+                                        <span>92% Accuracy</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-gradient-to-r from-primary to-secondary h-2 rounded-full" style="width: 92%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About PRATI -->
+    <section id="about" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">About the PRATI Test</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Developed specifically for Hong Kong Baptist University PRA students, the PRATI assessment helps you discover your unique personality type and career fit.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+                    <div class="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-4">
+                        <i class="fa fa-flask text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Scientific Foundation</h3>
+                    <p class="text-gray-600">Built on Jungian psychological type theory and validated through empirical research on PR and advertising professionals' personality traits.</p>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+                    <div class="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-4">
+                        <i class="fa fa-users text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">8 Personality Types</h3>
+                    <p class="text-gray-600">Identifies 4 distinct PR personality types and 4 advertising personality types, each with unique strengths and career paths.</p>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+                    <div class="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-4">
+                        <i class="fa fa-map-signs text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Personalized Guidance</h3>
+                    <p class="text-gray-600">Provides tailored career recommendations and development pathways based on your unique personality profile.</p>
+                </div>
+            </div>
+            
+            <div class="bg-gradient-to-r from-primary/5 to-secondary/5 rounded-xl p-8">
+                <h3 class="text-2xl font-semibold mb-6">Assessment Dimensions</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-white rounded-lg p-6 shadow-sm">
+                        <h4 class="font-medium text-primary mb-3">Relationship vs. Creative Focus</h4>
+                        <p class="text-sm text-gray-600">Measures your preference for building relationships versus creating innovative content. PR professionals typically focus on relationships, while advertising professionals often emphasize creativity.</p>
+                    </div>
+                    <div class="bg-white rounded-lg p-6 shadow-sm">
+                        <h4 class="font-medium text-primary mb-3">Strategic vs. Tactical Thinking</h4>
+                        <p class="text-sm text-gray-600">Assesses your approach to problem-solving and planning. Strategic thinkers excel in long-term planning, while tactical thinkers thrive in execution and implementation.</p>
+                    </div>
+                    <div class="bg-white rounded-lg p-6 shadow-sm">
+                        <h4 class="font-medium text-primary mb-3">Risk Aversion vs. Risk Taking</h4>
+                        <p class="text-sm text-gray-600">Evaluates your comfort with uncertainty and change. PR often requires risk management, while advertising may demand more risk-taking for creative breakthroughs.</p>
+                    </div>
+                    <div class="bg-white rounded-lg p-6 shadow-sm">
+                        <h4 class="font-medium text-primary mb-3">Analytical vs. Intuitive Processing</h4>
+                        <p class="text-sm text-gray-600">Measures how you process information and make decisions. Analytical thinkers rely on data, while intuitive thinkers trust instincts and patterns.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Personality Types -->
+    <section id="types" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">The 8 PRATI Personality Types</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Discover the unique personality profiles that define success in Public Relations and Advertising careers.</p>
+            </div>
+            
+            <!-- PR Types -->
+            <div class="mb-16">
+                <h3 class="text-2xl font-semibold mb-8 text-center text-primary">Public Relations Personality Types</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- GUARD -->
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                        <div class="bg-guard h-2"></div>
+                        <div class="p-8">
+                            <div class="flex items-center mb-6">
+                                <div class="w-16 h-16 rounded-lg bg-guard/10 flex items-center justify-center text-guard mr-4 shape-hover">
+                                    <i class="fa fa-shield text-3xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-2xl font-bold text-guard">GUARD</h4>
+                                    <p class="text-gray-600">The Guardian</p>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <h5 class="font-medium mb-3">Core Career Paths</h5>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="bg-guard/10 text-guard text-sm px-3 py-1 rounded-full">Stakeholder Management</span>
+                                    <span class="bg-guard/10 text-guard text-sm px-3 py-1 rounded-full">Corporate PR</span>
+                                    <span class="bg-guard/10 text-guard text-sm px-3 py-1 rounded-full">Brand Protection</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <h5 class="font-medium mb-3">Key Traits</h5>
+                                <ul class="space-y-2 text-gray-600">
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-guard mt-1 mr-2"></i>
+                                        <span>Relationship-focused and trustworthy</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-guard mt-1 mr-2"></i>
+                                        <span>Detail-oriented and organized</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-guard mt-1 mr-2"></i>
+                                        <span>Risk-averse and protective</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-guard mt-1 mr-2"></i>
+                                        <span>Consistent and reliable</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h5 class="font-medium mb-3">Ideal Work Environment</h5>
+                                <p class="text-gray-600">Structured environments with clear processes and long-term relationship building opportunities. Values stability and predictable workflows.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- PILOT -->
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                        <div class="bg-pilot h-2"></div>
+                        <div class="p-8">
+                            <div class="flex items-center mb-6">
+                                <div class="w-16 h-16 rounded-full bg-pilot/10 flex items-center justify-center text-pilot mr-4 shape-hover">
+                                    <i class="fa fa-compass text-3xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-2xl font-bold text-pilot">PILOT</h4>
+                                    <p class="text-gray-600">The Navigator</p>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <h5 class="font-medium mb-3">Core Career Paths</h5>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="bg-pilot/10 text-pilot text-sm px-3 py-1 rounded-full">Crisis PR</span>
+                                    <span class="bg-pilot/10 text-pilot text-sm px-3 py-1 rounded-full">Reputation Management</span>
+                                    <span class="bg-pilot/10 text-pilot text-sm px-3 py-1 rounded-full">Risk Navigation</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <h5 class="font-medium mb-3">Key Traits</h5>
+                                <ul class="space-y-2 text-gray-600">
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-pilot mt-1 mr-2"></i>
+                                        <span>Calm under pressure and decisive</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-pilot mt-1 mr-2"></i>
+                                        <span>Strategic problem solver</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-pilot mt-1 mr-2"></i>
+                                        <span>Forward-thinking and proactive</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-pilot mt-1 mr-2"></i>
+                                        <span>Excellent crisis manager</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h5 class="font-medium mb-3">Ideal Work Environment</h5>
+                                <p class="text-gray-600">Dynamic environments with varied challenges and opportunities to navigate complex situations. Thrives in high-stakes, fast-paced settings.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- BUILD -->
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                        <div class="bg-build h-2"></div>
+                        <div class="p-8">
+                            <div class="flex items-center mb-6">
+                                <div class="w-16 h-16 rounded-lg bg-build/10 flex items-center justify-center text-build mr-4 shape-hover" style="clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);">
+                                    <i class="fa fa-cubes text-3xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-2xl font-bold text-build">BUILD</h4>
+                                    <p class="text-gray-600">The Builder</p>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <h5 class="font-medium mb-3">Core Career Paths</h5>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="bg-build/10 text-build text-sm px-3 py-1 rounded-full">PR Strategy</span>
+                                    <span class="bg-build/10 text-build text-sm px-3 py-1 rounded-full">Brand Reputation</span>
+                                    <span class="bg-build/10 text-build text-sm px-3 py-1 rounded-full">Communication Framework</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <h5 class="font-medium mb-3">Key Traits</h5>
+                                <ul class="space-y-2 text-gray-600">
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-build mt-1 mr-2"></i>
+                                        <span>Long-term strategic thinker</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-build mt-1 mr-2"></i>
+                                        <span>Logical and systematic</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-build mt-1 mr-2"></i>
+                                        <span>Structure-oriented</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-build mt-1 mr-2"></i>
+                                        <span>Methodical and thorough</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h5 class="font-medium mb-3">Ideal Work Environment</h5>
+                                <p class="text-gray-600">Environments that value planning and systematic approaches to reputation building. Prefers data-driven decision making and measurable outcomes.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- BRIDGE -->
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                        <div class="bg-bridge h-2"></div>
+                        <div class="p-8">
+                            <div class="flex items-center mb-6">
+                                <div class="w-16 h-16 rounded-lg bg-bridge/10 flex items-center justify-center text-bridge mr-4 shape-hover" style="clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);">
+                                    <i class="fa fa-exchange text-3xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-2xl font-bold text-bridge">BRIDGE</h4>
+                                    <p class="text-gray-600">The Connector</p>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <h5 class="font-medium mb-3">Core Career Paths</h5>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="bg-bridge/10 text-bridge text-sm px-3 py-1 rounded-full">Media Relations</span>
+                                    <span class="bg-bridge/10 text-bridge text-sm px-3 py-1 rounded-full">Internal Communication</span>
+                                    <span class="bg-bridge/10 text-bridge text-sm px-3 py-1 rounded-full">Community Engagement</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <h5 class="font-medium mb-3">Key Traits</h5>
+                                <ul class="space-y-2 text-gray-600">
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-bridge mt-1 mr-2"></i>
+                                        <span>Highly empathetic communicator</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-bridge mt-1 mr-2"></i>
+                                        <span>Cross-group connector</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-bridge mt-1 mr-2"></i>
+                                        <span>Clear storyteller</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-bridge mt-1 mr-2"></i>
+                                        <span>Relationship builder</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h5 class="font-medium mb-3">Ideal Work Environment</h5>
+                                <p class="text-gray-600">Collaborative environments with diverse stakeholders and opportunities for meaningful connections. Values open communication and mutual understanding.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- AD Types -->
+            <div>
+                <h3 class="text-2xl font-semibold mb-8 text-center text-secondary">Advertising Personality Types</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- CREATE -->
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                        <div class="bg-create h-2"></div>
+                        <div class="p-8">
+                            <div class="flex items-center mb-6">
+                                <div class="w-16 h-16 rounded-full bg-create/10 flex items-center justify-center text-create mr-4 shape-hover">
+                                    <i class="fa fa-paint-brush text-3xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-2xl font-bold text-create">CREATE</h4>
+                                    <p class="text-gray-600">The Creator</p>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <h5 class="font-medium mb-3">Core Career Paths</h5>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="bg-create/10 text-create text-sm px-3 py-1 rounded-full">Creative Strategy</span>
+                                    <span class="bg-create/10 text-create text-sm px-3 py-1 rounded-full">Art Direction</span>
+                                    <span class="bg-create/10 text-create text-sm px-3 py-1 rounded-full">Visual Design</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <h5 class="font-medium mb-3">Key Traits</h5>
+                                <ul class="space-y-2 text-gray-600">
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-create mt-1 mr-2"></i>
+                                        <span>Creativity-driven and innovative</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-create mt-1 mr-2"></i>
+                                        <span>Visually-oriented</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-create mt-1 mr-2"></i>
+                                        <span>Imaginative and original</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-create mt-1 mr-2"></i>
+                                        <span>Expressive and artistic</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h5 class="font-medium mb-3">Ideal Work Environment</h5>
+                                <p class="text-gray-600">Flexible, open environments that encourage experimentation and artistic expression. Values freedom to explore creative concepts and visual solutions.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- STORY -->
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                        <div class="bg-story h-2"></div>
+                        <div class="p-8">
+                            <div class="flex items-center mb-6">
+                                <div class="w-16 h-16 rounded-lg bg-story/10 flex items-center justify-center text-story mr-4 shape-hover" style="clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);">
+                                    <i class="fa fa-book text-3xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-2xl font-bold text-story">STORY</h4>
+                                    <p class="text-gray-600">The Storyteller</p>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <h5 class="font-medium mb-3">Core Career Paths</h5>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="bg-story/10 text-story text-sm px-3 py-1 rounded-full">Brand Storytelling</span>
+                                    <span class="bg-story/10 text-story text-sm px-3 py-1 rounded-full">Copywriting</span>
+                                    <span class="bg-story/10 text-story text-sm px-3 py-1 rounded-full">Content Strategy</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <h5 class="font-medium mb-3">Key Traits</h5>
+                                <ul class="space-y-2 text-gray-600">
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-story mt-1 mr-2"></i>
+                                        <span>Narrative-focused</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-story mt-1 mr-2"></i>
+                                        <span>Audience-centered</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-story mt-1 mr-2"></i>
+                                        <span>Emotional brand builder</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-story mt-1 mr-2"></i>
+                                        <span>Wordsmith and communicator</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h5 class="font-medium mb-3">Ideal Work Environment</h5>
+                                <p class="text-gray-600">Environments that value storytelling and emotional connection. Thrives when given opportunities to craft compelling narratives and content experiences.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- BLAZE -->
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                        <div class="bg-blaze h-2"></div>
+                        <div class="p-8">
+                            <div class="flex items-center mb-6">
+                                <div class="w-16 h-16 rounded-lg bg-blaze/10 flex items-center justify-center text-blaze mr-4 shape-hover" style="clip-path: polygon(50% 0%, 0% 100%, 100% 100%);">
+                                    <i class="fa fa-fire text-3xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-2xl font-bold text-blaze">BLAZE</h4>
+                                    <p class="text-gray-600">The Innovator</p>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <h5 class="font-medium mb-3">Core Career Paths</h5>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="bg-blaze/10 text-blaze text-sm px-3 py-1 rounded-full">Campaign Innovation</span>
+                                    <span class="bg-blaze/10 text-blaze text-sm px-3 py-1 rounded-full">Social Media Advertising</span>
+                                    <span class="bg-blaze/10 text-blaze text-sm px-3 py-1 rounded-full">Breakthrough Experiences</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <h5 class="font-medium mb-3">Key Traits</h5>
+                                <ul class="space-y-2 text-gray-600">
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-blaze mt-1 mr-2"></i>
+                                        <span>Bold and前卫</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-blaze mt-1 mr-2"></i>
+                                        <span>Trend-savvy</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-blaze mt-1 mr-2"></i>
+                                        <span>Disruptive thinker</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-blaze mt-1 mr-2"></i>
+                                        <span>Risk-taking and experimental</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h5 class="font-medium mb-3">Ideal Work Environment</h5>
+                                <p class="text-gray-600">Fast-paced, cutting-edge environments that embrace change and reward bold ideas. Thrives in settings that value innovation over tradition.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- MAP -->
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                        <div class="bg-map h-2"></div>
+                        <div class="p-8">
+                            <div class="flex items-center mb-6">
+                                <div class="w-16 h-16 rounded-lg bg-map/10 flex items-center justify-center text-map mr-4 shape-hover" style="clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);">
+                                    <i class="fa fa-map text-3xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-2xl font-bold text-map">MAP</h4>
+                                    <p class="text-gray-600">The Planner</p>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <h5 class="font-medium mb-3">Core Career Paths</h5>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="bg-map/10 text-map text-sm px-3 py-1 rounded-full">Brand Planning</span>
+                                    <span class="bg-map/10 text-map text-sm px-3 py-1 rounded-full">Account Management</span>
+                                    <span class="bg-map/10 text-map text-sm px-3 py-1 rounded-full">Strategic Marketing</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <h5 class="font-medium mb-3">Key Traits</h5>
+                                <ul class="space-y-2 text-gray-600">
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-map mt-1 mr-2"></i>
+                                        <span>Strategic big-picture thinker</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-map mt-1 mr-2"></i>
+                                        <span>Goal-oriented</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-map mt-1 mr-2"></i>
+                                        <span>Brand blueprint architect</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-map mt-1 mr-2"></i>
+                                        <span>Organized and methodical</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h5 class="font-medium mb-3">Ideal Work Environment</h5>
+                                <p class="text-gray-600">Structured environments that value strategic planning and measurable outcomes. Thrives when developing comprehensive brand strategies and marketing plans.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Take the Test -->
+    <section id="test" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Take the PRATI Test</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Answer 15 questions to discover your unique PR/AD personality type and get personalized career recommendations.</p>
+            </div>
+            
+            <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
+                <!-- Test Introduction -->
+                <div id="test-intro" class="p-8">
+                    <div class="mb-8">
+                        <h3 class="text-2xl font-semibold mb-4">Test Instructions</h3>
+                        <ul class="space-y-3 text-gray-600">
+                            <li class="flex items-start">
+                                <i class="fa fa-check-circle text-success mt-1 mr-2"></i>
+                                <span>The test contains 15 questions designed to identify your PR/AD personality type</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-check-circle text-success mt-1 mr-2"></i>
+                                <span>Each question has 5 options. Please choose the option that best describes you</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-check-circle text-success mt-1 mr-2"></i>
+                                <span>Answer honestly based on your natural preferences and tendencies</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-check-circle text-success mt-1 mr-2"></i>
+                                <span>After completing the test, you will receive a detailed personality analysis report</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-neutral-light rounded-lg p-4 mb-8">
+                        <p class="text-sm text-gray-600"><i class="fa fa-info-circle text-primary mr-2"></i> There are no right or wrong answers. Your most authentic responses will provide the most accurate insights about your personality type and career fit.</p>
+                    </div>
+                    
+                    <div class="flex justify-center">
+                        <button id="start-test-btn" class="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white font-medium py-3 px-8 rounded-lg shadow-md transition-all-300">
+                            Start PRATI Test
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Test Questions -->
+                <div id="test-questions" class="hidden">
+                    <!-- Progress Bar -->
+                    <div class="bg-gray-100 py-3 px-8">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm font-medium text-gray-700">Progress</span>
+                            <span id="progress-text" class="text-sm text-gray-500">1/15</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div id="progress-bar" class="bg-gradient-to-r from-primary to-secondary h-2 rounded-full" style="width: 6.67%"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Question Content -->
+                    <div class="p-8">
+                        <h3 id="question-category" class="text-sm font-medium text-primary mb-2">Relationship vs. Creative Focus</h3>
+                        <h4 id="question-text" class="text-xl font-semibold mb-6">When working on a project, you are more focused on:</h4>
+                        
+                        <div id="answer-options" class="space-y-3 mb-8">
+                            <div class="answer-option">
+                                <input type="radio" id="option-1" name="answer" value="1" class="hidden peer">
+                                <label for="option-1" class="block p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 peer-checked:border-primary peer-checked:bg-primary/5 transition-all-300">
+                                    <div class="flex items-center">
+                                        <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center mr-3 peer-checked:border-primary">
+                                            <div class="w-3 h-3 rounded-full bg-primary hidden peer-checked:block"></div>
+                                        </div>
+                                        <span>Building and maintaining relationships with stakeholders</span>
+                                    </div>
+                                </label>
+                            </div>
+                            
+                            <div class="answer-option">
+                                <input type="radio" id="option-2" name="answer" value="2" class="hidden peer">
+                                <label for="option-2" class="block p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 peer-checked:border-primary peer-checked:bg-primary/5 transition-all-300">
+                                    <div class="flex items-center">
+                                        <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center mr-3 peer-checked:border-primary">
+                                            <div class="w-3 h-3 rounded-full bg-primary hidden peer-checked:block"></div>
+                                        </div>
+                                        <span>Creating innovative and original content</span>
+                                    </div>
+                                </label>
+                            </div>
+                            
+                            <div class="answer-option">
+                                <input type="radio" id="option-3" name="answer" value="3" class="hidden peer">
+                                <label for="option-3" class="block p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 peer-checked:border-primary peer-checked:bg-primary/5 transition-all-300">
+                                    <div class="flex items-center">
+                                        <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center mr-3 peer-checked:border-primary">
+                                            <div class="w-3 h-3 rounded-full bg-primary hidden peer-checked:block"></div>
+                                        </div>
+                                        <span>Both relationship building and creative content equally</span>
+                                    </div>
+                                </label>
+                            </div>
+                            
+                            <div class="answer-option">
+                                <input type="radio" id="option-4" name="answer" value="4" class="hidden peer">
+                                <label for="option-4" class="block p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 peer-checked:border-primary peer-checked:bg-primary/5 transition-all-300">
+                                    <div class="flex items-center">
+                                        <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center mr-3 peer-checked:border-primary">
+                                            <div class="w-3 h-3 rounded-full bg-primary hidden peer-checked:block"></div>
+                                        </div>
+                                        <span>Analyzing data and making strategic decisions</span>
+                                    </div>
+                                </label>
+                            </div>
+                            
+                            <div class="answer-option">
+                                <input type="radio" id="option-5" name="answer" value="5" class="hidden peer">
+                                <label for="option-5" class="block p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 peer-checked:border-primary peer-checked:bg-primary/5 transition-all-300">
+                                    <div class="flex items-center">
+                                        <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center mr-3 peer-checked:border-primary">
+                                            <div class="w-3 h-3 rounded-full bg-primary hidden peer-checked:block"></div>
+                                        </div>
+                                        <span>Managing processes and ensuring smooth execution</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between">
+                            <button id="prev-btn" class="bg-white border border-gray-300 text-gray-700 font-medium py-2 px-6 rounded-lg shadow-sm transition-all-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                                <i class="fa fa-arrow-left mr-2"></i> Previous
+                            </button>
+                            <button id="next-btn" class="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white font-medium py-2 px-6 rounded-lg shadow-md transition-all-300">
+                                Next <i class="fa fa-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Test Results -->
+                <div id="test-results" class="hidden">
+                    <div class="p-8">
+                        <div class="text-center mb-8">
+                            <h3 class="text-2xl font-semibold mb-2">Your PRATI Personality Type Is...</h3>
+                            <div class="text-5xl font-bold text-center mb-4 text-gradient" id="personality-type">GUARD</div>
+                            <p class="text-xl text-gray-600 mb-2" id="personality-title">The Guardian</p>
+                            <div class="inline-block px-4 py-2 rounded-full text-sm font-medium" id="personality-career" style="background-color: rgba(59, 130, 246, 0.1); color: #3b82f6;">
+                                Public Relations Focus
+                            </div>
+                        </div>
+                        
+                        <!-- Personality Shape -->
+                        <div class="flex justify-center mb-8">
+                            <div id="personality-shape" class="w-32 h-32 rounded-lg bg-guard/10 flex items-center justify-center text-guard animate-float" style="font-size: 4rem;">
+                                <i class="fa fa-shield"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- Match Overview -->
+                        <div class="mb-8">
+                            <h4 class="text-lg font-medium mb-4">Career Match Overview</h4>
+                            <div class="bg-white rounded-lg shadow p-4">
+                                <div class="flex justify-between items-center mb-4">
+                                    <div>
+                                        <span class="text-sm text-gray-500">PR Match</span>
+                                        <div class="text-2xl font-bold text-primary" id="pr-score">85%</div>
+                                    </div>
+                                    <div>
+                                        <span class="text-sm text-gray-500">AD Match</span>
+                                        <div class="text-2xl font-bold text-secondary" id="ad-score">45%</div>
+                                    </div>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
+                                    <div class="flex h-full">
+                                        <div id="pr-bar" class="bg-primary h-full" style="width: 85%"></div>
+                                        <div id="ad-bar" class="bg-secondary h-full" style="width: 15%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Core Traits -->
+                        <div class="mb-8">
+                            <h4 class="text-lg font-medium mb-4">Core Personality Traits</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-white rounded-lg shadow p-4">
+                                    <h5 class="font-medium mb-3">Strengths</h5>
+                                    <ul class="space-y-2 text-gray-600" id="strengths-list">
+                                        <li class="flex items-start">
+                                            <i class="fa fa-star text-guard mt-1 mr-2"></i>
+                                            <span>Relationship-focused and trustworthy</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fa fa-star text-guard mt-1 mr-2"></i>
+                                            <span>Detail-oriented and organized</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fa fa-star text-guard mt-1 mr-2"></i>
+                                            <span>Risk-averse and protective</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="bg-white rounded-lg shadow p-4">
+                                    <h5 class="font-medium mb-3">Career Fit</h5>
+                                    <ul class="space-y-2 text-gray-600" id="career-fit-list">
+                                        <li class="flex items-start">
+                                            <i class="fa fa-check-circle text-guard mt-1 mr-2"></i>
+                                            <span>Stakeholder Management</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fa fa-check-circle text-guard mt-1 mr-2"></i>
+                                            <span>Corporate PR</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fa fa-check-circle text-guard mt-1 mr-2"></i>
+                                            <span>Brand Protection</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Personalized Development Advice -->
+                        <div class="mb-8">
+                            <h4 class="text-lg font-medium mb-4">Personalized Development Advice</h4>
+                            <div id="development-advice" class="bg-white rounded-lg shadow p-6">
+                                <p class="text-gray-700 mb-4">Based on your PRATI results, we recommend that you:</p>
+                                
+                                <ul class="space-y-3 text-gray-600" id="advice-list">
+                                    <li class="flex items-start">
+                                        <i class="fa fa-arrow-right text-primary mt-1 mr-2"></i>
+                                        <span>Focus on developing your relationship management skills through internships in corporate communications or stakeholder engagement</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-arrow-right text-primary mt-1 mr-2"></i>
+                                        <span>Take courses in crisis communication and reputation management to enhance your ability to protect brand interests</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-arrow-right text-primary mt-1 mr-2"></i>
+                                        <span>Join professional PR organizations to build your network and learn from experienced practitioners</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <!-- 40-Second Speech -->
+                        <div class="mb-8">
+                            <h4 class="text-lg font-medium mb-4">Your 40-Second Introduction</h4>
+                            <div class="bg-white rounded-lg shadow p-6">
+                                <p class="text-gray-700 italic" id="speech-text">
+                                    "As a GUARD personality type, I excel in building and maintaining trust-based relationships with stakeholders. My detail-oriented approach and risk management skills make me an ideal fit for corporate PR and brand protection roles. I'm passionate about protecting brand reputation and ensuring consistent, trustworthy communication that builds long-term stakeholder confidence."
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex flex-col sm:flex-row justify-between space-y-4 sm:space-y-0">
+                            <button id="restart-test-btn" class="bg-white border border-gray-300 text-gray-700 font-medium py-2 px-6 rounded-lg shadow-sm transition-all-300">
+                                <i class="fa fa-refresh mr-2"></i> Retake Test
+                            </button>
+                            <button id="download-result-btn" class="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white font-medium py-2 px-6 rounded-lg shadow-md transition-all-300">
+                                <i class="fa fa-download mr-2"></i> Download Report
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Research & References -->
+    <section id="research" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Research & References</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">The PRATI assessment is grounded in scientific research on personality traits and career fit in PR and advertising.</p>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-lg p-8">
+                <h3 class="text-2xl font-semibold mb-6">Academic References</h3>
+                
+                <div class="space-y-6 text-sm text-gray-700">
+                    <div>
+                        <p>1. McCrae, R. R., & Costa, P. T. (2008). The Five-Factor Theory of personality. In O. P. John, R. W. Robins, & L. A. Pervin (Eds.), Handbook of personality: Theory and research (3rd ed., pp. 159-181). Guilford Press.</p>
+                    </div>
+                    
+                    <div>
+                        <p>2. Furnham, A., & Crump, J. (2015). Personality and career choice: The relationship between the Big Five personality traits and career interests. Personality and Individual Differences, 79, 91-96.</p>
+                    </div>
+                    
+                    <div>
+                        <p>3. Johnson, J. A., & Podsakoff, P. M. (2010). Leadership and job performance: A meta-analysis. Psychological Bulletin, 136(1), 30-61.</p>
+                    </div>
+                    
+                    <div>
+                        <p>4. Nardi, D. (2011). Neuroscience of personality: Brain-based approaches to understanding human nature. W. W. Norton & Company.</p>
+                    </div>
+                    
+                    <div>
+                        <p>5. Amabile, T. M. (1996). Creativity in context: Update to the social psychology of creativity. Westview Press.</p>
+                    </div>
+                    
+                    <div>
+                        <p>6. Holland, J. L. (1997). Making vocational choices: A theory of vocational personalities and work environments (3rd ed.). Psychological Assessment Resources.</p>
+                    </div>
+                    
+                    <div>
+                        <p>7. Barrick, M. R., & Mount, M. K. (1991). The Big Five personality dimensions and job performance: A meta-analysis. Personnel Psychology, 44(1), 1-26.</p>
+                    </div>
+                    
+                    <div>
+                        <p>8. Judge, T. A., Bono, J. E., Ilies, R., & Gerhardt, M. W. (2002). Personality and leadership: A qualitative and quantitative review. Journal of Applied Psychology, 87(4), 765-780.</p>
+                    </div>
+                    
+                    <div>
+                        <p>9. Till, B. D., Zdravkovic, S., & Morrison, B. (2011). M-B Indicator and Advertising Careers. Journal for Advancement of Marketing Education, 19, 1-14.</p>
+                    </div>
+                    
+                    <div>
+                        <p>10. Zimbardo, P. G. (2023). The Psychology Behind Being a Publicist. Psychology Today. Retrieved from https://www.zimbardo.com/the-psychology-behind-being-a-publicist/</p>
+                    </div>
+                </div>
+                
+                <div class="mt-8 pt-8 border-t border-gray-200">
+                    <h4 class="text-xl font-semibold mb-4">Development Process</h4>
+                    <p class="text-gray-600 mb-6">The PRATI assessment was developed through a rigorous process including literature review, expert interviews, pilot testing with HKBU PRA students, and statistical validation of results. The assessment has been designed specifically to address the unique career decision needs of PRA students choosing between PR and advertising specializations.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-neutral-light rounded-lg p-6">
+                            <h5 class="font-medium mb-3">Research Phase</h5>
+                            <p class="text-sm text-gray-600">Comprehensive review of personality psychology literature and career assessment tools, with focus on PR and advertising industry requirements.</p>
+                        </div>
+                        
+                        <div class="bg-neutral-light rounded-lg p-6">
+                            <h5 class="font-medium mb-3">Development Phase</h5>
+                            <p class="text-sm text-gray-600">Creation of assessment dimensions, question development, and personality type framework based on industry expert input and academic research.</p>
+                        </div>
+                        
+                        <div class="bg-neutral-light rounded-lg p-6">
+                            <h5 class="font-medium mb-3">Validation Phase</h5>
+                            <p class="text-sm text-gray-600">Pilot testing with HKBU PRA students, statistical analysis of results, and refinement of the assessment based on feedback and data analysis.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white font-bold text-lg">PRATI</div>
+                        <span class="text-lg font-bold">PRATI Test</span>
+                    </div>
+                    <p class="text-gray-400 text-sm">A scientifically-backed personality assessment tool designed specifically for HKBU PRA students to discover their ideal career fit in Public Relations or Advertising.</p>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><a href="#home" class="hover:text-white transition-all-300">Home</a></li>
+                        <li><a href="#about" class="hover:text-white transition-all-300">About PRATI</a></li>
+                        <li><a href="#test" class="hover:text-white transition-all-300">Take the Test</a></li>
+                        <li><a href="#types" class="hover:text-white transition-all-300">Personality Types</a></li>
+                        <li><a href="#research" class="hover:text-white transition-all-300">Research</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Resources</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><a href="#" class="hover:text-white transition-all-300">Career Guide</a></li>
+                        <li><a href="#" class="hover:text-white transition-all-300">PRA Hub Forum</a></li>
+                        <li><a href="#" class="hover:text-white transition-all-300">Industry Insights</a></li>
+                        <li><a href="#" class="hover:text-white transition-all-300">FAQ</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contact Us</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li class="flex items-center">
+                            <i class="fa fa-envelope-o mr-2"></i>
+                            <span>prati@hkbu.edu.hk</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-phone mr-2"></i>
+                            <span>+852 3411 7890</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-map-marker mr-2"></i>
+                            <span>Hong Kong Baptist University, Kowloon Tong</span>
+                        </li>
+                    </ul>
+                    <div class="flex space-x-4 mt-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-all-300">
+                            <i class="fa fa-facebook text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-all-300">
+                            <i class="fa fa-instagram text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-all-300">
+                            <i class="fa fa-linkedin text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm mb-4 md:mb-0">© 2026 PRATI Test. All Rights Reserved.</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition-all-300">Privacy Policy</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition-all-300">Terms of Service</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition-all-300">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // If mobile, close menu after click
+                    const mobileMenu = document.getElementById('mobile-menu');
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                }
+            });
+        });
+        
+        // Personality type definitions
+        const personalityTypes = {
+            GUARD: {
+                title: "The Guardian",
+                career: "Public Relations Focus",
+                color: "guard",
+                shape: "rounded-lg",
+                icon: "fa-shield",
+                strengths: [
+                    "Relationship-focused and trustworthy",
+                    "Detail-oriented and organized",
+                    "Risk-averse and protective",
+                    "Consistent and reliable"
+                ],
+                careerFit: [
+                    "Stakeholder Management",
+                    "Corporate PR",
+                    "Brand Protection"
+                ],
+                advice: [
+                    "Focus on developing your relationship management skills through internships in corporate communications or stakeholder engagement",
+                    "Take courses in crisis communication and reputation management to enhance your ability to protect brand interests",
+                    "Join professional PR organizations to build your network and learn from experienced practitioners"
+                ],
+                speech: "As a GUARD personality type, I excel in building and maintaining trust-based relationships with stakeholders. My detail-oriented approach and risk management skills make me an ideal fit for corporate PR and brand protection roles. I'm passionate about protecting brand reputation and ensuring consistent, trustworthy communication that builds long-term stakeholder confidence."
+            },
+            PILOT: {
+                title: "The Navigator",
+                career: "Public Relations Focus",
+                color: "pilot",
+                shape: "rounded-full",
+                icon: "fa-compass",
+                strengths: [
+                    "Calm under pressure and decisive",
+                    "Strategic problem solver",
+                    "Forward-thinking and proactive",
+                    "Excellent crisis manager"
+                ],
+                careerFit: [
+                    "Crisis PR",
+                    "Reputation Management",
+                    "Risk Navigation"
+                ],
+                advice: [
+                    "Develop your crisis management skills through specialized training and simulation exercises",
+                    "Build expertise in strategic communication planning and reputation management frameworks",
+                    "Seek opportunities to work on high-stakes projects that require quick thinking and strategic decision-making"
+                ],
+                speech: "As a PILOT personality type, I thrive in high-pressure situations where strategic thinking and quick decision-making are essential. My ability to navigate complex challenges and manage reputation risks makes me well-suited for crisis PR and reputation management roles. I excel at developing proactive communication strategies that protect and enhance brand reputation."
+            },
+            BUILD: {
+                title: "The Builder",
+                career: "Public Relations Focus",
+                color: "build",
+                shape: "polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)",
+                icon: "fa-cubes",
+                strengths: [
+                    "Long-term strategic thinker",
+                    "Logical and systematic",
+                    "Structure-oriented",
+                    "Methodical and thorough"
+                ],
+                careerFit: [
+                    "PR Strategy",
+                    "Brand Reputation",
+                    "Communication Framework"
+                ],
+                advice: [
+                    "Focus on developing your strategic planning skills through courses in communication strategy and brand management",
+                    "Build expertise in data analysis and research methodologies to support evidence-based PR planning",
+                    "Seek opportunities to work on long-term brand building initiatives that require systematic planning"
+                ],
+                speech: "As a BUILD personality type, I excel at developing comprehensive PR strategies and communication frameworks that build strong brand reputations. My systematic approach and methodical thinking allow me to create structured communication plans that deliver measurable results. I'm passionate about building long-term relationships and reputation assets that stand the test of time."
+            },
+            BRIDGE: {
+                title: "The Connector",
+                career: "Public Relations Focus",
+                color: "bridge",
+                shape: "polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)",
+                icon: "fa-exchange",
+                strengths: [
+                    "Highly empathetic communicator",
+                    "Cross-group connector",
+                    "Clear storyteller",
+                    "Relationship builder"
+                ],
+                careerFit: [
+                    "Media Relations",
+                    "Internal Communication",
+                    "Community Engagement"
+                ],
+                advice: [
+                    "Develop your storytelling and media relations skills through specialized training and practice",
+                    "Build expertise in cross-cultural communication and stakeholder engagement strategies",
+                    "Seek opportunities to work on community outreach programs and internal communication initiatives"
+                ],
+                speech: "As a BRIDGE personality type, I excel at connecting different stakeholders and building meaningful relationships across diverse groups. My empathetic communication style and storytelling abilities make me well-suited for media relations and community engagement roles. I'm passionate about creating clear, authentic messages that resonate with different audiences and build bridges between organizations and their publics."
+            },
+            CREATE: {
+                title: "The Creator",
+                career: "Advertising Focus",
+                color: "create",
+                shape: "rounded-full",
+                icon: "fa-paint-brush",
+                strengths: [
+                    "Creativity-driven and innovative",
+                    "Visually-oriented",
+                    "Imaginative and original",
+                    "Expressive and artistic"
+                ],
+                careerFit: [
+                    "Creative Strategy",
+                    "Art Direction",
+                    "Visual Design"
+                ],
+                advice: [
+                    "Develop your creative skills through specialized training in design, art direction, or creative strategy",
+                    "Build a strong portfolio that showcases your creative thinking and visual communication abilities",
+                    "Seek opportunities to work on brand identity projects and multi-channel creative campaigns"
+                ],
+                speech: "As a CREATE personality type, I thrive on developing innovative visual concepts and creative solutions that capture attention and drive engagement. My artistic sensibilities and imaginative thinking make me well-suited for creative strategy and art direction roles. I'm passionate about creating visually compelling work that communicates brand stories in original and impactful ways."
+            },
+            STORY: {
+                title: "The Storyteller",
+                career: "Advertising Focus",
+                color: "story",
+                shape: "polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)",
+                icon: "fa-book",
+                strengths: [
+                    "Narrative-focused",
+                    "Audience-centered",
+                    "Emotional brand builder",
+                    "Wordsmith and communicator"
+                ],
+                careerFit: [
+                    "Brand Storytelling",
+                    "Copywriting",
+                    "Content Strategy"
+                ],
+                advice: [
+                    "Develop your storytelling and copywriting skills through specialized training and practice",
+                    "Build expertise in audience psychology and emotional branding techniques",
+                    "Seek opportunities to work on brand storytelling projects and content marketing campaigns"
+                ],
+                speech: "As a STORY personality type, I excel at crafting compelling narratives that connect with audiences on an emotional level. My ability to understand audience needs and create resonant stories makes me well-suited for copywriting and brand storytelling roles. I'm passionate about using the power of narrative to build emotional connections between brands and their audiences."
+            },
+            BLAZE: {
+                title: "The Innovator",
+                career: "Advertising Focus",
+                color: "blaze",
+                shape: "polygon(50% 0%, 0% 100%, 100% 100%)",
+                icon: "fa-fire",
+                strengths: [
+                    "Bold and forward-thinking",
+                    "Trend-savvy",
+                    "Disruptive thinker",
+                    "Risk-taking and experimental"
+                ],
+                careerFit: [
+                    "Campaign Innovation",
+                    "Social Media Advertising",
+                    "Breakthrough Experiences"
+                ],
+                advice: [
+                    "Develop your trendspotting abilities and digital media expertise through specialized training",
+                    "Build a portfolio of innovative campaign concepts that demonstrate your ability to think outside the box",
+                    "Seek opportunities to work on social media campaigns and experiential marketing projects"
+                ],
+                speech: "As a BLAZE personality type, I thrive on pushing boundaries and developing innovative advertising approaches that break through the clutter. My ability to spot emerging trends and think disruptively makes me well-suited for campaign innovation and social media advertising roles. I'm passionate about creating breakthrough experiences that capture attention and drive meaningful engagement."
+            },
+            MAP: {
+                title: "The Planner",
+                career: "Advertising Focus",
+                color: "map",
+                shape: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
+                icon: "fa-map",
+                strengths: [
+                    "Strategic big-picture thinker",
+                    "Goal-oriented",
+                    "Brand blueprint architect",
+                    "Organized and methodical"
+                ],
+                careerFit: [
+                    "Brand Planning",
+                    "Account Management",
+                    "Strategic Marketing"
+                ],
+                advice: [
+                    "Develop your strategic planning skills through specialized training in brand strategy and marketing planning",
+                    "Build expertise in market research and data analysis to support strategic decision-making",
+                    "Seek opportunities to work on brand planning projects and integrated marketing campaigns"
+                ],
+                speech: "As a MAP personality type, I excel at developing comprehensive brand strategies and marketing plans that align with business objectives. My ability to see the big picture while managing details makes me well-suited for brand planning and account management roles. I'm passionate about creating strategic roadmaps that guide brands toward their goals and drive measurable business results."
+            }
+        };
+        
+        // Test questions data
+        const questions = [
+            {
+                category: "Relationship vs. Creative Focus",
+                text: "When working on a project, you are more focused on:",
+                options: [
+                    "Building and maintaining relationships with stakeholders",
+                    "Creating innovative and original content",
+                    "Both relationship building and creative content equally",
+                    "Analyzing data and making strategic decisions",
+                    "Managing processes and ensuring smooth execution"
+                ],
+                dimension: "relationship_creative"
+            },
+            {
+                category: "Strategic vs. Tactical Thinking",
+                text: "When faced with a challenge, you tend to:",
+                options: [
+                    "Focus on immediate actions and practical solutions",
+                    "Think about long-term implications and big-picture strategy",
+                    "Balance both short-term tactics and long-term strategy",
+                    "Seek input from others before deciding on an approach",
+                    "Follow established procedures and proven methods"
+                ],
+                dimension: "strategic_tactical"
+            },
+            {
+                category: "Risk Aversion vs. Risk Taking",
+                text: "When presented with a new opportunity, you are more likely to:",
+                options: [
+                    "Carefully assess risks before making a decision",
+                    "Embrace the opportunity even if it involves uncertainty",
+                    "Weigh risks and benefits equally before deciding",
+                    "Seek advice from others about potential risks",
+                    "Only proceed if the opportunity has minimal risk"
+                ],
+                dimension: "risk_attitude"
+            },
+            {
+                category: "Analytical vs. Intuitive Processing",
+                text: "When making decisions, you primarily rely on:",
+                options: [
+                    "Data and logical analysis",
+                    "Intuition and gut feelings",
+                    "Both data analysis and intuition",
+                    "Input from others and established guidelines",
+                    "Past experiences and proven methods"
+                ],
+                dimension: "processing_style"
+            },
+            {
+                category: "Relationship vs. Creative Focus",
+                text: "In team discussions, you are more likely to:",
+                options: [
+                    "Focus on maintaining harmony and understanding between team members",
+                    "Generate creative ideas and innovative solutions",
+                    "Both build relationships and contribute creative ideas",
+                    "Analyze problems and suggest practical solutions",
+                    "Organize the discussion and keep the team on track"
+                ],
+                dimension: "relationship_creative"
+            },
+            {
+                category: "Strategic vs. Tactical Thinking",
+                text: "When planning your work, you prefer to:",
+                options: [
+                    "Create detailed step-by-step plans with clear timelines",
+                    "Develop broad strategies with flexible implementation approaches",
+                    "Combine strategic planning with tactical details",
+                    "Adapt plans based on changing circumstances",
+                    "Follow plans created by others rather than making your own"
+                ],
+                dimension: "strategic_tactical"
+            },
+            {
+                category: "Risk Aversion vs. Risk Taking",
+                text: "When evaluating ideas, you are more concerned with:",
+                options: [
+                    "Whether the idea is practical and feasible",
+                    "The innovative potential and breakthrough possibilities",
+                    "Both practicality and innovation potential",
+                    "How others will react to the idea",
+                    "Whether the idea follows established norms and practices"
+                ],
+                dimension: "risk_attitude"
+            },
+            {
+                category: "Analytical vs. Intuitive Processing",
+                text: "When learning new information, you prefer to:",
+                options: [
+                    "Study facts, figures, and concrete data",
+                    "Focus on patterns, connections, and possibilities",
+                    "Use both analytical and intuitive approaches",
+                    "Learn through hands-on experience and practice",
+                    "Follow structured learning materials and guidelines"
+                ],
+                dimension: "processing_style"
+            },
+            {
+                category: "Relationship vs. Creative Focus",
+                text: "In your free time, you are more likely to:",
+                options: [
+                    "Spend time with friends and build relationships",
+                    "Engage in creative activities like art, writing, or design",
+                    "Balance social activities with creative pursuits",
+                    "Learn new skills or research topics of interest",
+                    "Organize your life and plan for future activities"
+                ],
+                dimension: "relationship_creative"
+            },
+            {
+                category: "Strategic vs. Tactical Thinking",
+                text: "When setting goals, you tend to:",
+                options: [
+                    "Set specific, measurable, short-term goals",
+                    "Focus on long-term vision and broad objectives",
+                    "Create a mix of short-term and long-term goals",
+                    "Adjust goals based on changing circumstances",
+                    "Follow goals set by others or organizations"
+                ],
+                dimension: "strategic_tactical"
+            },
+            {
+                category: "Risk Aversion vs. Risk Taking",
+                text: "When faced with change, you typically:",
+                options: [
+                    "Prefer the stability of familiar situations",
+                    "Embrace change as an opportunity for growth",
+                    "Adapt to change while maintaining some stability",
+                    "Seek guidance from others during transitions",
+                    "Resist change until it becomes unavoidable"
+                ],
+                dimension: "risk_attitude"
+            },
+            {
+                category: "Analytical vs. Intuitive Processing",
+                text: "When solving problems, you are more comfortable with:",
+                options: [
+                    "Structured, logical approaches with clear steps",
+                    "Exploring multiple possibilities and creative solutions",
+                    "Using both analytical and creative problem-solving",
+                    "Collaborative problem-solving with others",
+                    "Proven problem-solving methods and best practices"
+                ],
+                dimension: "processing_style"
+            },
+            {
+                category: "Relationship vs. Creative Focus",
+                text: "In professional settings, you value most:",
+                options: [
+                    "Strong relationships and effective communication",
+                    "Creative innovation and original thinking",
+                    "Both relationship building and creative thinking",
+                    "Logical analysis and data-driven decisions",
+                    "Organization and efficient execution"
+                ],
+                dimension: "relationship_creative"
+            },
+            {
+                category: "Strategic vs. Tactical Thinking",
+                text: "When evaluating success, you focus more on:",
+                options: [
+                    "Immediate results and short-term achievements",
+                    "Long-term impact and strategic outcomes",
+                    "Both immediate results and long-term impact",
+                    "Team achievements and collaborative success",
+                    "Following processes correctly regardless of outcomes"
+                ],
+                dimension: "strategic_tactical"
+            },
+            {
+                category: "Risk Aversion vs. Risk Taking",
+                text: "When presenting ideas, you tend to:",
+                options: [
+                    "Focus on practical benefits and proven results",
+                    "Emphasize innovative potential and new possibilities",
+                    "Balance practical benefits with innovative potential",
+                    "Present ideas that align with audience expectations",
+                    "Stick to conventional ideas that are likely to be accepted"
+                ],
+                dimension: "risk_attitude"
+            }
+        ];
+        
+        // Test-related variables
+        let currentQuestionIndex = 0;
+        const userAnswers = [];
+        const dimensionScores = {
+            relationship_creative: { relationship: 0, creative: 0 },
+            strategic_tactical: { strategic: 0, tactical: 0 },
+            risk_attitude: { risk_averse: 0, risk_seeking: 0 },
+            processing_style: { analytical: 0, intuitive: 0 }
+        };
+        
+        // DOM elements
+        const testIntro = document.getElementById('test-intro');
+        const testQuestions = document.getElementById('test-questions');
+        const testResults = document.getElementById('test-results');
+        const startTestBtn = document.getElementById('start-test-btn');
+        const restartTestBtn = document.getElementById('restart-test-btn');
+        const downloadResultBtn = document.getElementById('download-result-btn');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        const questionCategory = document.getElementById('question-category');
+        const questionText = document.getElementById('question-text');
+        const answerOptions = document.getElementById('answer-options');
+        
+        // Start test
+        startTestBtn.addEventListener('click', function() {
+            testIntro.classList.add('hidden');
+            testQuestions.classList.remove('hidden');
+            showQuestion(0);
+        });
+        
+        // Restart test
+        restartTestBtn.addEventListener('click', function() {
+            currentQuestionIndex = 0;
+            userAnswers.length = 0;
+            resetDimensionScores();
+            testResults.classList.add('hidden');
+            testQuestions.classList.remove('hidden');
+            showQuestion(0);
+        });
+        
+        // Download report
+        downloadResultBtn.addEventListener('click', function() {
+            alert('Report download function coming soon!');
+        });
+        
+        // Previous question
+        prevBtn.addEventListener('click', function() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                showQuestion(currentQuestionIndex);
+            }
+        });
+        
+        // Next question
+        nextBtn.addEventListener('click', function() {
+            const selectedOption = document.querySelector('input[name="answer"]:checked');
+            
+            if (!selectedOption) {
+                alert('Please select an option');
+                return;
+            }
+            
+            userAnswers[currentQuestionIndex] = parseInt(selectedOption.value);
+            
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                showQuestion(currentQuestionIndex);
+            } else {
+                calculateResults();
+                showResults();
+            }
+        });
+        
+        // Show question
+        function showQuestion(index) {
+            const question = questions[index];
+            
+            questionCategory.textContent = question.category;
+            questionText.textContent = question.text;
+            
+            // Update options
+            answerOptions.innerHTML = '';
+            question.options.forEach((option, i) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'answer-option';
+                
+                const input = document.createElement('input');
+                input.type = 'radio';
+                input.id = `option-${i+1}`;
+                input.name = 'answer';
+                input.value = i+1;
+                input.className = 'hidden peer';
+                
+                if (userAnswers[index] === i+1) {
+                    input.checked = true;
+                }
+                
+                const label = document.createElement('label');
+                label.htmlFor = `option-${i+1}`;
+                label.className = 'block p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 peer-checked:border-primary peer-checked:bg-primary/5 transition-all-300';
+                label.innerHTML = `
+                    <div class="flex items-center">
+                        <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center mr-3 peer-checked:border-primary">
+                            <div class="w-3 h-3 rounded-full bg-primary hidden peer-checked:block"></div>
+                        </div>
+                        <span>${option}</span>
+                    </div>
+                `;
+                
+                optionDiv.appendChild(input);
+                optionDiv.appendChild(label);
+                answerOptions.appendChild(optionDiv);
+            });
+            
+            // Update progress
+            const progress = ((index + 1) / questions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+            progressText.textContent = `${index + 1}/${questions.length}`;
+            
+            // Update button status
+            prevBtn.disabled = index === 0;
+            
+            if (index === questions.length - 1) {
+                nextBtn.textContent = 'Complete Test';
+                nextBtn.innerHTML = 'Complete Test <i class="fa fa-check ml-2"></i>';
+            } else {
+                nextBtn.textContent = 'Next';
+                nextBtn.innerHTML = 'Next <i class="fa fa-arrow-right ml-2"></i>';
+            }
+        }
+        
+        // Reset dimension scores
+        function resetDimensionScores() {
+            for (const dimension in dimensionScores) {
+                for (const trait in dimensionScores[dimension]) {
+                    dimensionScores[dimension][trait] = 0;
+                }
+            }
+        }
+        
+        // Calculate results
+        function calculateResults() {
+            for (let i = 0; i < questions.length; i++) {
+                const question = questions[i];
+                const answer = userAnswers[i];
+                const dimension = question.dimension;
+                
+                // Calculate scores based on question dimension and answer
+                switch (dimension) {
+                    case 'relationship_creative':
+                        if (answer === 1) {
+                            dimensionScores.relationship_creative.relationship += 3;
+                        } else if (answer === 2) {
+                            dimensionScores.relationship_creative.creative += 3;
+                        } else if (answer === 3) {
+                            dimensionScores.relationship_creative.relationship += 1;
+                            dimensionScores.relationship_creative.creative += 1;
+                        } else if (answer === 4) {
+                            dimensionScores.relationship_creative.relationship += 1;
+                        } else if (answer === 5) {
+                            dimensionScores.relationship_creative.creative += 1;
+                        }
+                        break;
+                    case 'strategic_tactical':
+                        if (answer === 1) {
+                            dimensionScores.strategic_tactical.tactical += 3;
+                        } else if (answer === 2) {
+                            dimensionScores.strategic_tactical.strategic += 3;
+                        } else if (answer === 3) {
+                            dimensionScores.strategic_tactical.tactical += 1;
+                            dimensionScores.strategic_tactical.strategic += 1;
+                        } else if (answer === 4) {
+                            dimensionScores.strategic_tactical.tactical += 1;
+                        } else if (answer === 5) {
+                            dimensionScores.strategic_tactical.strategic += 1;
+                        }
+                        break;
+                    case 'risk_attitude':
+                        if (answer === 1) {
+                            dimensionScores.risk_attitude.risk_averse += 3;
+                        } else if (answer === 2) {
+                            dimensionScores.risk_attitude.risk_seeking += 3;
+                        } else if (answer === 3) {
+                            dimensionScores.risk_attitude.risk_averse += 1;
+                            dimensionScores.risk_attitude.risk_seeking += 1;
+                        } else if (answer === 4) {
+                            dimensionScores.risk_attitude.risk_averse += 1;
+                        } else if (answer === 5) {
+                            dimensionScores.risk_attitude.risk_seeking += 1;
+                        }
+                        break;
+                    case 'processing_style':
+                        if (answer === 1) {
+                            dimensionScores.processing_style.analytical += 3;
+                        } else if (answer === 2) {
+                            dimensionScores.processing_style.intuitive += 3;
+                        } else if (answer === 3) {
+                            dimensionScores.processing_style.analytical += 1;
+                            dimensionScores.processing_style.intuitive += 1;
+                        } else if (answer === 4) {
+                            dimensionScores.processing_style.analytical += 1;
+                        } else if (answer === 5) {
+                            dimensionScores.processing_style.intuitive += 1;
+                        }
+                        break;
+                }
+            }
+        }
+        
+        // Determine personality type
+        function determinePersonalityType() {
+            // Calculate total scores for PR vs AD
+            const prScore = dimensionScores.relationship_creative.relationship + 
+                           dimensionScores.strategic_tactical.strategic + 
+                           dimensionScores.risk_attitude.risk_averse + 
+                           dimensionScores.processing_style.analytical;
+            
+            const adScore = dimensionScores.relationship_creative.creative + 
+                           dimensionScores.strategic_tactical.tactical + 
+                           dimensionScores.risk_attitude.risk_seeking + 
+                           dimensionScores.processing_style.intuitive;
+            
+            // Determine primary direction
+            const isPR = prScore >= adScore;
+            
+            // Determine specific type based on highest dimension scores
+            let primaryDimension = '';
+            let primaryScore = 0;
+            
+            if (isPR) {
+                // PR types
+                if (dimensionScores.relationship_creative.relationship > primaryScore) {
+                    primaryScore = dimensionScores.relationship_creative.relationship;
+                    primaryDimension = 'relationship';
+                }
+                if (dimensionScores.risk_attitude.risk_averse > primaryScore) {
+                    primaryScore = dimensionScores.risk_attitude.risk_averse;
+                    primaryDimension = 'risk_averse';
+                }
+                if (dimensionScores.strategic_tactical.strategic > primaryScore) {
+                    primaryScore = dimensionScores.strategic_tactical.strategic;
+                    primaryDimension = 'strategic';
+                }
+                if (dimensionScores.processing_style.analytical > primaryScore) {
+                    primaryScore = dimensionScores.processing_style.analytical;
+                    primaryDimension = 'analytical';
+                }
+                
+                // Map to PR personality types
+                switch (primaryDimension) {
+                    case 'relationship':
+                        return 'BRIDGE';
+                    case 'risk_averse':
+                        return 'GUARD';
+                    case 'strategic':
+                        return 'BUILD';
+                    case 'analytical':
+                        return 'PILOT';
+                    default:
+                        return 'GUARD'; // Default
+                }
+            } else {
+                // AD types
+                if (dimensionScores.relationship_creative.creative > primaryScore) {
+                    primaryScore = dimensionScores.relationship_creative.creative;
+                    primaryDimension = 'creative';
+                }
+                if (dimensionScores.risk_attitude.risk_seeking > primaryScore) {
+                    primaryScore = dimensionScores.risk_attitude.risk_seeking;
+                    primaryDimension = 'risk_seeking';
+                }
+                if (dimensionScores.strategic_tactical.tactical > primaryScore) {
+                    primaryScore = dimensionScores.strategic_tactical.tactical;
+                    primaryDimension = 'tactical';
+                }
+                if (dimensionScores.processing_style.intuitive > primaryScore) {
+                    primaryScore = dimensionScores.processing_style.intuitive;
+                    primaryDimension = 'intuitive';
+                }
+                
+                // Map to AD personality types
+                switch (primaryDimension) {
+                    case 'creative':
+                        return 'CREATE';
+                    case 'risk_seeking':
+                        return 'BLAZE';
+                    case 'tactical':
+                        return 'MAP';
+                    case 'intuitive':
+                        return 'STORY';
+                    default:
+                        return 'CREATE'; // Default
+                }
+            }
+        }
+        
+        // Show results
+        function showResults() {
+            testQuestions.classList.add('hidden');
+            testResults.classList.remove('hidden');
+            
+            // Determine personality type
+            const personalityType = determinePersonalityType();
+            const typeData = personalityTypes[personalityType];
+            
+            // Calculate PR and advertising match scores
+            const prScore = Math.round((dimensionScores.relationship_creative.relationship + 
+                                      dimensionScores.strategic_tactical.strategic + 
+                                      dimensionScores.risk_attitude.risk_averse + 
+                                      dimensionScores.processing_style.analytical) / 15 * 100);
+            
+            const adScore = Math.round((dimensionScores.relationship_creative.creative + 
+                                      dimensionScores.strategic_tactical.tactical + 
+                                      dimensionScores.risk_attitude.risk_seeking + 
+                                      dimensionScores.processing_style.intuitive) / 15 * 100);
+            
+            // Update result display
+            document.getElementById('personality-type').textContent = personalityType;
+            document.getElementById('personality-title').textContent = typeData.title;
+            document.getElementById('personality-career').textContent = typeData.career;
+            document.getElementById('personality-career').style.backgroundColor = `rgba(var(--tw-${typeData.color}-rgb), 0.1)`;
+            document.getElementById('personality-career').style.color = `var(--tw-${typeData.color})`;
+            
+            // Update personality shape
+            const personalityShape = document.getElementById('personality-shape');
+            personalityShape.className = `w-32 h-32 ${typeData.shape} bg-${typeData.color}/10 flex items-center justify-center text-${typeData.color} animate-float`;
+            personalityShape.style.fontSize = '4rem';
+            personalityShape.innerHTML = `<i class="fa ${typeData.icon}"></i>`;
+            
+            // Update scores
+            document.getElementById('pr-score').textContent = `${prScore}%`;
+            document.getElementById('ad-score').textContent = `${adScore}%`;
+            document.getElementById('pr-bar').style.width = `${prScore}%`;
+            document.getElementById('ad-bar').style.width = `${100 - prScore}%`;
+            
+            // Update strengths
+            const strengthsList = document.getElementById('strengths-list');
+            strengthsList.innerHTML = '';
+            typeData.strengths.forEach(strength => {
+                const li = document.createElement('li');
+                li.className = 'flex items-start';
+                li.innerHTML = `
+                    <i class="fa fa-star text-${typeData.color} mt-1 mr-2"></i>
+                    <span>${strength}</span>
+                `;
+                strengthsList.appendChild(li);
+            });
+            
+            // Update career fit
+            const careerFitList = document.getElementById('career-fit-list');
+            careerFitList.innerHTML = '';
+            typeData.careerFit.forEach(fit => {
+                const li = document.createElement('li');
+                li.className = 'flex items-start';
+                li.innerHTML = `
+                    <i class="fa fa-check-circle text-${typeData.color} mt-1 mr-2"></i>
+                    <span>${fit}</span>
+                `;
+                careerFitList.appendChild(li);
+            });
+            
+            // Update advice
+            const adviceList = document.getElementById('advice-list');
+            adviceList.innerHTML = '';
+            typeData.advice.forEach(advice => {
+                const li = document.createElement('li');
+                li.className = 'flex items-start';
+                li.innerHTML = `
+                    <i class="fa fa-arrow-right text-primary mt-1 mr-2"></i>
+                    <span>${advice}</span>
+                `;
+                adviceList.appendChild(li);
+            });
+            
+            // Update speech
+            document.getElementById('speech-text').textContent = typeData.speech;
+        }
+    </script>
+</body>
+</html>
